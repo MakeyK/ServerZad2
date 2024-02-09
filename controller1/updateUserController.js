@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 
 function check_login(id_user, login)
     {
-        if(login) return `UPDATE users SET login='${login}' WHERE id_user=${id_user}`
+        if(login) return `UPDATE users SET fio='${fio}' WHERE login=${login}`
         else return undefined
     }
 
@@ -14,10 +14,10 @@ class updateUserController
 {
     async update_user(req, res)
     {
-        const {id_user} = req.query
-        if(!id_user) return res.json({messenge: "Вы не ввели какой ID нужно редактировать!"})
+        const {login} = req.query
+        if(!login) return res.json({messenge: "Вы не ввели какой login нужно редактировать!"})
         const data = req.body
-        let query_login=check_login(id_user, data.login)
+        let query_login=check_login(fio, data.login)
         if(query_login)
         {
             await sequelize.query(query_login)
@@ -25,7 +25,7 @@ class updateUserController
         if(data.password)
         {
             const hashPassword = await bcrypt.hash(data.password, 5)
-            await sequelize.query(`UPDATE users SET password='${hashPassword}' WHERE id_user=${id_user}`)
+            await sequelize.query(`UPDATE users SET password='${hashPassword}' WHERE login=${login}`)
         }
         res.json({messege: "Данные изменены"})
     }

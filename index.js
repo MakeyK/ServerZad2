@@ -5,7 +5,7 @@ const {QueryTypes} = require('sequelize')
 const sequelize = require('./database')
 const CryptoJS = require('crypto-js')
 
-const PORT = 7000
+const PORT = 3000
 const app = express()
 const cors = require('cors')
 const router1 = require('./router1/index')
@@ -13,11 +13,11 @@ const router1 = require('./router1/index')
 app.use(cors())
 app.use(express.json())
 
-app.use('/api', router)
-app.use('/upgrade', router1)
+app.use('/mak', router)
+app.use('/mak1', router1)
 app.get('/test', async(req,res) =>
 {
-    const get_all = await sequelize.query(`SELECT * FROM "ToDos"`)
+    const get_all = await sequelize.query(`SELECT * FROM "statements"`)
     res.status(200).json(get_all)
 }
 )

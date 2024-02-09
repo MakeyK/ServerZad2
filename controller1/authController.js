@@ -3,10 +3,10 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const {User} = require('../model/model')
 
-const generateJwt = (id_user, login, role) =>
+const generateJwt = (fio, login, role) =>
 {
     return jwt.sign(
-        {id_user, login, role},
+        {fio, login, role},
         process.env.SECRET_KEY,
         {expiresIn: '24h'}
     )
@@ -28,7 +28,7 @@ class AuthController
         }
         const hashPassword = await bcrypt.hash(password, 5)
         const user = await User.create({login, password: hashPassword})
-        const token = generateJwt(user.id_user, user.login,)
+        const token = generateJwt(user.fio, user.login,)
         return res.json({token})
     }
 
@@ -46,10 +46,9 @@ class AuthController
         {
             return next(ApiError.badRequest("Введен неверный пароль!"))
         }
-        const token = generateJwt(user.id_user, user.login, user.role)
+        const token = generateJwt(user.fio, user.login, user.role)
         return res.json({token})
     }
 }
-
 
 module.exports=new AuthController()

@@ -11,9 +11,9 @@ class dataController
     }
     async getID_user(req, res)
     {
-        const {id_user} = req.params
-        const get_id = await User.findOne({where: {id_user}})
-        return res.json(get_id)
+        const {login} = req.params
+        const get_login = await User.findOne({where: {login}})
+        return res.json(get_login)
     }
 }
 
